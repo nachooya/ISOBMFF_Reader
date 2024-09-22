@@ -1,3 +1,5 @@
+[![Build and Test on windows, ubuntu, macos](https://github.com/nachooya/ISOBMFF_Reader/actions/workflows/cmake-multi-platform.yml/badge.svg)](https://github.com/nachooya/ISOBMFF_Reader/actions/workflows/cmake-multi-platform.yml)
+
 # MP4 Reader
 
 This is a simple MP4 reader written in C++. It reads the MP4 file and prints the contents of the file to the console.
