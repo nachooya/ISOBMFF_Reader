@@ -13,12 +13,25 @@ bool isLittleEndian()
     return *reinterpret_cast<uint8_t *>(&number) == 1;
 }
 
-uint32_t toLittleEndian(uint32_t bigEndian)
+uint32_t toLittleEndian32(uint32_t bigEndian)
 {
     return (bigEndian >> 24) & 0xff |  // Move byte 3 to byte 0
            (bigEndian >> 8) & 0xff00 | // Move byte 2 to byte 1
            (bigEndian & 0xff00) << 8 | // Move byte 1 to byte 2
            (bigEndian & 0xff) << 24;   // Move byte 0 to byte 3
+}
+
+uint64_t toLittleEndian64(uint64_t bigEndian)
+{
+    return (bigEndian >> 56) & 0xff |   // Move byte 7 to byte 0
+           (bigEndian >> 48) & 0xff00 | // Move byte 6 to byte 1
+           (bigEndian >> 40) & 0xff00 | // Move byte 5 to byte 2
+           (bigEndian >> 32) & 0xff00 | // Move byte 4 to byte 3
+           (bigEndian >> 24) & 0xff00 | // Move byte 3 to byte 4
+           (bigEndian >> 16) & 0xff00 | // Move byte 2 to byte 5
+           (bigEndian >> 8) & 0xff00 |  // Move byte 1 to byte 6
+           (bigEndian & 0xff00) << 8 |  // Move byte 0 to byte 7
+           (bigEndian & 0xff) << 56;    // Move byte 7 to byte 0
 }
 
 std::shared_ptr<Mp4Reader> Mp4Reader::New(const std::string &pFilePath, const std::shared_ptr<IMp4Output> &pOutputWritter)
@@ -45,7 +58,7 @@ bool Mp4Reader::readUnit32t(std::ifstream &file, uint32_t &value) const
     {
         if (m_isLittleEndian)
         {
-            value = toLittleEndian(value);
+            value = toLittleEndian32(value);
         }
     }
     return true;
@@ -63,7 +76,7 @@ bool Mp4Reader::readUnit64t(std::ifstream &file, uint64_t &value) const
     {
         if (m_isLittleEndian)
         {
-            value = __builtin_bswap64(value);
+            value = toLittleEndian64(value);
         }
     }
     std::cout << "Read 64-bit value: " << value << std::endl;
