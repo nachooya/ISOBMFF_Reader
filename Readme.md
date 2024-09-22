@@ -1,12 +1,12 @@
 [![Build and Test on windows, ubuntu, macos](https://github.com/nachooya/ISOBMFF_Reader/actions/workflows/cmake-multi-platform.yml/badge.svg)](https://github.com/nachooya/ISOBMFF_Reader/actions/workflows/cmake-multi-platform.yml)
 
-# MP4 Reader
+# ISOBMFF Reader
 
-This is a simple MP4 reader written in C++. It reads the MP4 file and prints the contents of the file to the console.
+This is a simple ISOBMFF reader written in C++. It reads the ISOBMFF file and prints the contents of the file to the console.
 
 ## Usage
 
-To use the MP4 reader, you need to provide the path to the MP4 file as an argument when running the program. For example:
+To use the ISOBMFF reader, you need to provide the path to the ISOBMFF file as an argument when running the program. For example:
 
 ```
 ./Mp4Reader tests/assets/text0.mp4
@@ -14,7 +14,7 @@ To use the MP4 reader, you need to provide the path to the MP4 file as an argume
 
 This will read the file `tests/assets/text0.mp4` and print its contents to the console.
 
-Image extraction is also supported when built with pugixml. To extract images from the MP4 file, you need to provide the path to the MP4 file as an argument when running the program. For example:
+Image extraction is also supported when built with pugixml. To extract images from the ISOBMFF file, you need to provide the path to the ISOBMFF file as an argument when running the program. For example:
 
 ```
 ./Mp4Reader --extract-images tests/assets/text0.mp4
@@ -24,19 +24,19 @@ This will read the file `tests/assets/text0.mp4` and extract images from the fil
 
 ## Features
 
-The MP4 reader supports the following features:
+The ISOBMFF reader supports the following features:
 
-- Reading the contents of the MP4 file and printing them to the console.
-- Extracting images from the MP4 file and saving them to a directory.
+- Reading the contents of the ISOBMFF file and printing them to the console.
+- Extracting images from the ISOBMFF file and saving them to a directory.
 
 ## Building
 
-To build the MP4 reader, you need to have the following dependencies installed:
+To build the ISOBMFF reader, you need to have the following dependencies installed:
 
 - A C++ compiler (e.g., GCC or Clang)
 - CMake (version 3.14 or later)
 
-Once you have the dependencies installed, you can build the MP4 reader by running the following commands:
+Once you have the dependencies installed, you can build the ISOBMFF reader by running the following commands:
 
 ```
 mkdir build
