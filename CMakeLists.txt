@@ -76,6 +76,11 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
         tests/test_Mp4Reader.cpp
     )
 
+    add_test(NAME Mp4ReaderTestSuite COMMAND Mp4ReaderTests)
+
+    # Enable testing
+    enable_testing()
+
     # Link CppUTest to the test executable
     target_link_libraries(Mp4ReaderTests PRIVATE CppUTest)
 
