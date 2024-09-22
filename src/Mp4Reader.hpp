@@ -19,6 +19,7 @@ private:
     // Constructor to initialize the file path
     explicit Mp4Reader(const std::string &pFilePath, const std::shared_ptr<IMp4Output> &pOutputFormat);
     bool readUnit32t(std::ifstream &file, uint32_t &value) const;
+    bool readUnit64t(std::ifstream &file, uint64_t &value) const;
 
     bool m_isLittleEndian;
     std::string m_filePath;

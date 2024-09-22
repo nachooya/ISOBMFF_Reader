@@ -20,7 +20,7 @@ public:
         std::cout << text << std::endl;
     }
 
-    void writeBox(const Mp4Box::BoxType &boxType, const uint32_t &boxSize) override
+    void writeBox(const Mp4Box::BoxType &boxType, const uint64_t &boxSize) override
     {
         std::cout << getCurrentTimestamp() << " Found box of type: " << Mp4Box::getBoxTypeString(boxType) << " and  size: " << boxSize << std::endl;
     }

@@ -13,7 +13,7 @@ public:
     virtual ~IMp4Output() = default;
 
     virtual void writeError(const std::string &text) = 0;
-    virtual void writeBox(const Mp4Box::BoxType &boxType, const uint32_t &boxSize) = 0;
+    virtual void writeBox(const Mp4Box::BoxType &boxType, const uint64_t &boxSize) = 0;
     virtual bool writeData(std::istream &dataStream) = 0;
 };
 

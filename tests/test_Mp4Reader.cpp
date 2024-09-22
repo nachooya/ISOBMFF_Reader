@@ -10,7 +10,7 @@ public:
         m_errors++;
     }
 
-    void writeBox(const Mp4Box::BoxType &boxType, const uint32_t &boxSize) override
+    void writeBox(const Mp4Box::BoxType &boxType, const uint64_t &boxSize) override
     {
         m_boxes++;
     }

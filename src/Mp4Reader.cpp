@@ -51,9 +51,27 @@ bool Mp4Reader::readUnit32t(std::ifstream &file, uint32_t &value) const
     return true;
 }
 
+bool Mp4Reader::readUnit64t(std::ifstream &file, uint64_t &value) const
+{
+    file.read(reinterpret_cast<char *>(&value), sizeof(value));
+    // Check if the file is a valid MP4 file
+    if (file.gcount() != 8)
+    {
+        return false;
+    }
+    else
+    {
+        if (m_isLittleEndian)
+        {
+            value = __builtin_bswap64(value);
+        }
+    }
+    std::cout << "Read 64-bit value: " << value << std::endl;
+    return true;
+}
+
 bool Mp4Reader::readFile() const
 {
-
     // For every box first 4 bytes are the size of the box
     // The first 4 bytes of the box are the size of the box in bytes, including the size of the header.
     // The size of the box is the size of the box in bytes, excluding the size of the header.
@@ -72,9 +90,10 @@ bool Mp4Reader::readFile() const
         while (true)
         {
 
-            uint32_t boxSize;
-            ;
-            if (!readUnit32t(file, boxSize))
+            uint32_t boxSize32;
+            uint64_t boxSize64;
+
+            if (!readUnit32t(file, boxSize32))
             {
                 if (file.eof())
                 {
@@ -86,12 +105,26 @@ bool Mp4Reader::readFile() const
                     return false;
                 }
             }
+            else
+            {
+                boxSize64 = boxSize32;
+            }
 
             uint32_t boxTypeCode;
             if (readUnit32t(file, boxTypeCode) == false)
             {
                 m_outputWritter->writeError("Error: Invalid MP4 file. Error reading box type.");
                 return false;
+            }
+
+            // Large size case: read 64-bit size
+            if (boxSize32 == 1)
+            {
+                if (!readUnit64t(file, boxSize64))
+                {
+                    m_outputWritter->writeError("Error: Invalid MP4 file. Error reading box size.");
+                    return false;
+                }
             }
 
             auto boxType = Mp4Box::checkBoxCode(boxTypeCode);
@@ -104,7 +137,7 @@ bool Mp4Reader::readFile() const
             }
             else
             {
-                m_outputWritter->writeBox(boxType, boxSize);
+                m_outputWritter->writeBox(boxType, boxSize64);
 
                 // a. A box of type MOOF only contains other boxes
                 // b. A box of type TRAF only contains other boxes
@@ -122,12 +155,12 @@ bool Mp4Reader::readFile() const
                 {
                     if (boxType == Mp4Box::MDAT)
                     {
-                        auto boundedStream = BoundedStream(file, boxSize - 8);
+                        auto boundedStream = BoundedStream(file, boxSize64 - 8);
                         m_outputWritter->writeData(boundedStream);
                     }
                     else
                     {
-                        file.seekg(boxSize - 8, std::ios::cur);
+                        file.seekg(boxSize64 - 8, std::ios::cur);
                     }
                 }
             }
